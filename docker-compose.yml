@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: meteora_postgres
+    environment:
+      POSTGRES_DB: meteora_lp
+      POSTGRES_USER: meteora_user
+      POSTGRES_PASSWORD: meteora_password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - meteora_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: meteora_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - meteora_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  meteora_network:
+    driver: bridge

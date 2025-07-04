@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(PUPPETEER_SKIP_DOWNLOAD=true npm install)",
+      "Bash(node:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(claude mcp:*)",
+      "WebFetch(domain:docs.meteora.ag)",
+      "Bash(touch:*)",
+      "Bash(docker-compose:*)",
+      "Bash(npx tsx:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "Bash(pkill:*)",
+      "Bash(rm:*)",
+      "Bash(npm start)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:dlmm-api.meteora.ag)",
+      "Bash(git --version)",
+      "Bash(git config:*)"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "puppeteer-server"
+  ]
+}

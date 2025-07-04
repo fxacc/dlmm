@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "puppeteer-server": {
+      "command": "node",
+      "args": ["src/index.js"],
+      "cwd": "."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "docs.meteora.ag"
+    ],
+    "deny": []
+  }
+}
