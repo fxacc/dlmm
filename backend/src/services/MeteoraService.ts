@@ -1,19 +1,57 @@
 import { PublicKey } from '@solana/web3.js';
-import { connection } from '../config/solana.js';
+import { connection, NETWORK } from '../config/solana.js';
 import { TradingPair, PairRealtimeData } from '../models/TradingPair.js';
+import { MeteoraDLMMDiscoveryService, DLMMPoolInfo } from './MeteoraDLMMDiscoveryService.js';
 import axios from 'axios';
 
 export class MeteoraService {
   private static instance: MeteoraService;
   private readonly API_BASE_URL = 'https://dlmm-api.meteora.ag';
+  private dlmmDiscovery: MeteoraDLMMDiscoveryService;
 
-  private constructor() {}
+  private constructor() {
+    this.dlmmDiscovery = MeteoraDLMMDiscoveryService.getInstance();
+  }
 
   public static getInstance(): MeteoraService {
     if (!MeteoraService.instance) {
       MeteoraService.instance = new MeteoraService();
     }
     return MeteoraService.instance;
+  }
+
+  // 发现可用的 DLMM 池 (针对当前网络)
+  async discoverDLMMPools(): Promise<TradingPair[]> {
+    try {
+      console.log(`🔍 Discovering DLMM pools for ${NETWORK}...`);
+      
+      const dlmmPools = await this.dlmmDiscovery.discoverDLMMPools();
+      
+      const tradingPairs: TradingPair[] = dlmmPools.map(pool => ({
+        poolAddress: pool.poolAddress,
+        tokenAAddress: pool.tokenX,
+        tokenBAddress: pool.tokenY,
+        tokenASymbol: pool.tokenXSymbol || 'UNKNOWN',
+        tokenBSymbol: pool.tokenYSymbol || 'UNKNOWN',
+        tokenADecimals: 9, // 默认值，可以后续查询
+        tokenBDecimals: 6, // 默认值，可以后续查询
+        feeRate: pool.binStep / 10000, // 将 bin step 转换为费率
+        isActive: pool.isActive
+      }));
+
+      console.log(`✅ Discovered ${tradingPairs.length} DLMM pools on ${NETWORK}`);
+      return tradingPairs;
+    } catch (error) {
+      console.error('❌ Error discovering DLMM pools:', error);
+      
+      // 如果发现失败，回退到模拟数据
+      if (NETWORK === 'devnet') {
+        console.log('⚠️ Falling back to devnet mock data...');
+        return this.getDevnetMockPairs();
+      }
+      
+      return this.getMockPairs();
+    }
   }
 
   // 获取所有交易对
@@ -171,6 +209,56 @@ export class MeteoraService {
   private calculateDailyYield(fees24h: number, tvl: number): number {
     if (tvl === 0) return 0;
     return (fees24h / tvl) * 100;
+  }
+
+  // 获取 devnet 模拟数据
+  private getDevnetMockPairs(): TradingPair[] {
+    return [
+      {
+        poolAddress: '5rCf1DM8LjKTw4YqhnoLcngyZYeNnQqztScTogYHAS6',
+        tokenAAddress: 'So11111111111111111111111111111111111111112',
+        tokenBAddress: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        tokenASymbol: 'SOL',
+        tokenBSymbol: 'USDC',
+        tokenADecimals: 9,
+        tokenBDecimals: 6,
+        feeRate: 0.0025,
+        isActive: true
+      },
+      {
+        poolAddress: '9d9mb8kooFfaD3SctgZtkxQypkshx6ezhbKio89ixyy2',
+        tokenAAddress: 'So11111111111111111111111111111111111111112',
+        tokenBAddress: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        tokenASymbol: 'SOL',
+        tokenBSymbol: 'USDC',
+        tokenADecimals: 9,
+        tokenBDecimals: 6,
+        feeRate: 0.01,
+        isActive: true
+      },
+      {
+        poolAddress: 'BoeMUkCLHchTD31HdXsbDExuZZfcUppSLpYtV3LZTH6U',
+        tokenAAddress: 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn',
+        tokenBAddress: 'So11111111111111111111111111111111111111112',
+        tokenASymbol: 'jitoSOL',
+        tokenBSymbol: 'SOL',
+        tokenADecimals: 9,
+        tokenBDecimals: 9,
+        feeRate: 0.0025,
+        isActive: true
+      },
+      {
+        poolAddress: 'ARwi1S4DaiTG5DX7S4M4ZsrXqpMD1MrTmbu9ue2tpmEq',
+        tokenAAddress: 'EgQ3yNtVhJzt9VBoPKvPwdYuaq7fFWKUwB8Rbpg2dEJV',
+        tokenBAddress: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        tokenASymbol: 'USDT',
+        tokenBSymbol: 'USDC',
+        tokenADecimals: 6,
+        tokenBDecimals: 6,
+        feeRate: 0.0005,
+        isActive: true
+      }
+    ];
   }
 
   // 获取模拟数据用于测试
