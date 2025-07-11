@@ -1,13 +1,23 @@
 # Dependencies
 node_modules/
 */node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Package lock files (可选：如果团队使用不同的包管理器)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # Environment variables
 .env
+*.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
+frontend/.env
 
 # Logs
 logs
@@ -53,7 +63,9 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variable files
-.env*
+.env
+.env.local
+.env.*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -97,3 +109,134 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+
+# ================================
+# 项目特定忽略文件
+# ================================
+
+# 敏感文件 - 钱包和密钥
+wallet.json
+wallets.json
+*.key
+*.pem
+*.p12
+*.keystore
+private-keys/
+secrets/
+
+# Solana相关敏感文件
+keypair.json
+authority.json
+mint-authority.json
+id.json
+
+# 配置文件中的敏感信息
+config/production.json
+config/staging.json
+*-config.json
+settings.local.json
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+database/
+db/
+
+# 缓存和临时文件
+.cache/
+cache/
+*.cache
+.tmp/
+tmp/
+temp/
+server.log
+*.log.*
+
+# 构建和编译输出
+build/
+dist/
+out/
+lib/
+compiled/
+backend/dist/
+frontend/dist/
+frontend/build/
+
+# TypeScript编译输出
+*.tsbuildinfo
+*.d.ts.map
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+test-results/
+junit.xml
+
+# IDE和编辑器文件
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+*~
+
+# 开发工具文件
+.eslintcache
+.stylelintcache
+.prettierignore
+
+# 运行时和进程文件
+*.pid
+*.seed
+*.pid.lock
+pids/
+
+# 备份和存档文件
+*.backup
+*.bak
+*.old
+*.orig
+*.save
+*.tar
+*.tar.gz
+*.zip
+*.rar
+
+# 文档生成
+docs/build/
+docs/dist/
+
+# 监控和分析
+.sentryclirc
+newrelic.js
+
+# Docker相关
+.dockerignore
+docker-compose.override.yml
+Dockerfile.dev
+
+# Kubernetes配置
+k8s/secrets/
+*.kubeconfig
+
+# CI/CD相关
+.github/workflows/secrets.yml
+
+# 网络和API密钥文件
+api-keys.json
+tokens.json
+credentials.json
+
+# 本地开发文件
+local-*
+dev-*
+test-data/
+mock-data/
+sample-data/
+
+# 性能和分析文件
+*.prof
+*.trace
+flamegraph.svg
