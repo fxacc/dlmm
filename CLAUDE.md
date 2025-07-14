@@ -1,6 +1,9 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+开发文档参考他的官方文档：
+https://docs.meteora.ag/integration/damm-v2-integration/damm-v2-sdk/damm-v2-typescript-sdk
+github:https://github.com/MeteoraAg/damm-v2
 
 ## Project Overview
 

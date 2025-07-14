@@ -1,0 +1,43 @@
+{
+  "wallets": {
+    "wallet1": {
+      "name": "测试钱包",
+      "publicKey": "请替换为实际的公钥地址",
+      "privateKey": "请替换为实际的私钥（base58格式）",
+      "description": "用于测试网LP持仓监控的钱包"
+    },
+    "mainnet_wallet": {
+      "name": "主网钱包",
+      "publicKey": "请替换为主网钱包的公钥地址",
+      "privateKey": "请替换为主网钱包的私钥（base58格式）",
+      "description": "用于主网交易的钱包（谨慎使用）"
+    }
+  },
+  "_instructions": {
+    "setup": [
+      "1. 复制此文件为 wallet.json",
+      "2. 将 'wallet.json' 添加到 .gitignore（已完成）",
+      "3. 用实际的钱包信息替换示例值",
+      "4. 确保私钥使用 base58 格式",
+      "5. 测试网钱包请使用 Devnet 网络"
+    ],
+    "获取测试网钱包": [
+      "1. 使用 Phantom、Solflare 等钱包创建新钱包",
+      "2. 切换到 Devnet 网络",
+      "3. 从水龙头获取测试SOL: https://faucet.solana.com/",
+      "4. 将公钥和私钥填入上方配置",
+      "5. 在测试网上进行LP操作以测试监控功能"
+    ],
+    "测试网水龙头": [
+      "https://faucet.solana.com/",
+      "https://solfaucet.com/"
+    ],
+    "安全提醒": [
+      "⚠️ 请确保这是测试网钱包，不要使用主网钱包",
+      "⚠️ 测试网私钥虽然价值较低，但仍需妥善保管",
+      "⚠️ 生产环境请加密存储私钥",
+      "⚠️ 永远不要将此文件提交到版本控制系统",
+      "⚠️ 定期轮换钱包和密钥"
+    ]
+  }
+}
